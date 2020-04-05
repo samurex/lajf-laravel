@@ -13,7 +13,18 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware(['guest:api'])
+    ->namespace('Api\V1\Auth')
+    ->prefix('v1')
+    ->group(function () {
+        Route::post('auth/register', 'RegisterController@register');
+    });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware(['auth:sanctum'])
+    ->namespace('Api\V1')
+    ->prefix('v1')
+    ->group(function () {
+        Route::get('me', 'UserController@me');
+        Route::post('declare', 'DeclarationController@create');
+        Route::post('latest', 'DeclarationController@latest');
+    });

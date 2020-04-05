@@ -17,9 +17,11 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->date('dob')->nullable()->index();
+            $table->integer('age')->nullable()->index();
             $table->string('gender', 16)->index();
             $table->string('city', 64)->nullable()->index();
             $table->string('occupation', 128)->nullable();
+            $table->string('kids', 128)->nullable();
             $table->decimal('long', 10, 7)->nullable();
             $table->decimal('lat', 10, 7)->nullable();
             $table->timestamps();

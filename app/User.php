@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
     /**
      * Set a UUID on create.
      */
@@ -33,11 +35,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'dob',
+        'age',
         'gender',
         'city',
         'occupation',
-        'long',
-        'lat',
     ];
+
+    public function declarations()
+    {
+        return $this->hasMany(Declaration::class);
+    }
+
 }
