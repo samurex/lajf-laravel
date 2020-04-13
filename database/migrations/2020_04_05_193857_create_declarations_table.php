@@ -20,7 +20,6 @@ class CreateDeclarationsTable extends Migration
             $table->string('question_2')->nullable();
             $table->string('question_3')->nullable();
             $table->string('temperature')->nullable(false);
-
             $table->timestamps();
         });
     }

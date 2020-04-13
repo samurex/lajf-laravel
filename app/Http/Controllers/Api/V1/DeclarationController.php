@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 use App\Http\Controllers\Controller;
 use App\Declaration;
 
@@ -21,5 +23,10 @@ class DeclarationController extends Controller
             ->declarations()
             ->latest()
             ->first();
+    }
+
+    public function map()
+    {
+        return Declaration::where('created_at', '>=', Carbon::now()->subDay())->get();
     }
 }

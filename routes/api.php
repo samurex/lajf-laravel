@@ -29,4 +29,5 @@ Route::middleware(['auth:sanctum'])
 
         Route::post('declare', 'DeclarationController@create');
         Route::get('latest', 'DeclarationController@latest');
+        Route::get('map', 'DeclarationController@map');
     });

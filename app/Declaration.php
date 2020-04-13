@@ -12,6 +12,8 @@ class Declaration extends Model
         'question_2',
         'question_3',
         'temperature',
+        'latitude',
+        'longitude',
     ];
 
     public function user()
