@@ -24,10 +24,13 @@ Route::middleware(['auth:sanctum'])
     ->namespace('Api\V1')
     ->prefix('v1')
     ->group(function () {
-        Route::get('me', 'UserController@me');
         Route::post('auth/logout', 'Auth\LogoutController@logout');
 
         Route::post('declare', 'DeclarationController@create');
         Route::get('latest', 'DeclarationController@latest');
         Route::get('map', 'DeclarationController@map');
+
+        Route::get('settings', 'SettingsController@index');
+        Route::post('settings', 'SettingsController@update');
+
     });
