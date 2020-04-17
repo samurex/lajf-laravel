@@ -8,10 +8,10 @@ class Declaration extends Model
 {
     protected $fillable = [
         'user_id',
-        'question_1',
-        'question_2',
-        'question_3',
-        'temperature',
+        'mood_id',
+        'scale',
+        'feelings',
+        'share',
         'latitude',
         'longitude',
     ];
@@ -19,5 +19,10 @@ class Declaration extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function mood()
+    {
+        return $this->belongsTo(Mood::class);
     }
 }

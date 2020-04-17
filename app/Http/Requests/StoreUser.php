@@ -25,10 +25,8 @@ class StoreUser extends FormRequest
     {
         return [
             'age' => [ 'required', 'integer', 'between:1,150'],
-            'gender' => ['required', 'in:male,female,other'],
-            'city' => ['string', 'max:255'],
-            'occupation' => ['string', 'max:255'],
-            'kids' => ['string', 'max:255'],
+            'gender' => ['required', 'in:male,female,unspecified'],
+            'occupation' => ['string', 'in:full_time,part_time,unemployed,retired'],
         ];
     }
 }

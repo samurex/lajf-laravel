@@ -12,7 +12,13 @@ class DeclarationController extends Controller
 {
     public function create(Request $request)
     {
-        $fields = array_merge($request->all(), ['user_id' =>  auth()->user()->id]);
+        $validated = $this->validate($request, [
+            'mood_id' => 'required|exists:moods,id',
+            'scale' => 'required|between:0,100',
+            'feelings' => 'nullable',
+            'share' => 'boolean',
+        ]);
+        $fields = array_merge($validated, ['user_id' =>  auth()->user()->id]);
         return Declaration::create($fields);
     }
 
@@ -27,6 +33,9 @@ class DeclarationController extends Controller
 
     public function map()
     {
-        return Declaration::where('created_at', '>=', Carbon::now()->subDay())->get();
+        return Declaration::with(['user', 'mood'])
+            ->where('created_at', '>=', Carbon::now()->subDay())
+            ->where('share', 1)
+            ->get();
     }
 }

@@ -33,4 +33,6 @@ Route::middleware(['auth:sanctum'])
         Route::get('settings', 'SettingsController@index');
         Route::post('settings', 'SettingsController@update');
 
+        Route::get('moods', 'MoodController@index');
+
     });
