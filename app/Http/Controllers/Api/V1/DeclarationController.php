@@ -17,6 +17,8 @@ class DeclarationController extends Controller
             'scale' => 'required|between:0,100',
             'feelings' => 'nullable',
             'share' => 'boolean',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
         $fields = array_merge($validated, ['user_id' =>  auth()->user()->id]);
         return Declaration::create($fields);
