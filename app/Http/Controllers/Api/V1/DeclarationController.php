@@ -35,7 +35,8 @@ class DeclarationController extends Controller
 
     public function map()
     {
-        return Declaration::with(['user', 'mood'])
+        return Declaration::has('user')
+            ->with(['user', 'mood'])
             ->where('created_at', '>=', Carbon::now()->subDay())
             ->where('share', 1)
             ->get();
