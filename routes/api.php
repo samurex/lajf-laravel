@@ -35,4 +35,7 @@ Route::middleware(['auth:sanctum'])
 
         Route::get('moods', 'MoodController@index');
 
+        Route::get('image/{id}', 'ImageController@show');
+        Route::post('image', 'ImageController@store');
+
     });

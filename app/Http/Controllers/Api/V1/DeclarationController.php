@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 use App\Http\Controllers\Controller;
 use App\Declaration;
+use App\Image;
 
 class DeclarationController extends Controller
 {
@@ -19,9 +20,17 @@ class DeclarationController extends Controller
             'share' => 'boolean',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
+            'image_id' => 'nullable|exists:images,id'
         ]);
-        $fields = array_merge($validated, ['user_id' =>  auth()->user()->id]);
-        return Declaration::create($fields);
+        $validated['user_id'] = auth()->user()->id;
+    
+        $declaration = Declaration::create($validated);
+        if ($validated['image_id']) {
+            $image = Image::find($validated['image_id']);
+            $declaration->image()->save($image);
+        }
+
+        return $declaration;
     }
 
     public function latest() 
@@ -39,6 +48,7 @@ class DeclarationController extends Controller
             ->with(['user', 'mood'])
             ->where('created_at', '>=', Carbon::now()->subDay())
             ->where('share', 1)
+            ->latest()
             ->get();
     }
 }
