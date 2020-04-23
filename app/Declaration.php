@@ -3,10 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Malhal\Geographical\Geographical;
 use Storage;
 
 class Declaration extends Model
 {
+    use Geographical;
+
+    protected static $kilometers = true;
+
     protected $fillable = [
         'user_id',
         'mood_id',

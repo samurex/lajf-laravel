@@ -29,6 +29,7 @@ Route::middleware(['auth:sanctum'])
         Route::post('declare', 'DeclarationController@create');
         Route::get('latest', 'DeclarationController@latest');
         Route::get('map', 'DeclarationController@map');
+        Route::get('dashboard', 'DeclarationController@dashboard');
 
         Route::get('settings', 'SettingsController@index');
         Route::post('settings', 'SettingsController@update');
@@ -38,4 +39,5 @@ Route::middleware(['auth:sanctum'])
         Route::get('image/{id}', 'ImageController@show');
         Route::post('image', 'ImageController@store');
 
+        Route::get('hashtags', 'HashtagController@search');
     });
