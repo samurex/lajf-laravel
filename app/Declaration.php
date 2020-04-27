@@ -17,6 +17,7 @@ class Declaration extends Model
         'mood_id',
         'scale',
         'feelings',
+        'hashtag_id',
         'share',
         'latitude',
         'longitude',
@@ -27,6 +28,11 @@ class Declaration extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function hashtag()
+    {
+        return $this->belongsTo(Hashtag::class);
     }
 
     public function mood()

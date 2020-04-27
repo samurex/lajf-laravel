@@ -10,8 +10,13 @@ class Hashtag extends Model
         'name',
     ];
 
-    public function fileable()
+    public function declarations()
     {
-        return $this->morphTo();
+        return $this->hasMany(Declaration::class);
+    }
+
+    public function publicDeclarations()
+    {
+        return $this->hasMany(Declaration::class)->where('share', 1);
     }
 }

@@ -17,6 +17,7 @@ class HashtagController extends Controller
         ]);
 
         return Hashtag::where('name','LIKE', '%' . $validated['search'] . '%')
+            ->whereHas('publicDeclarations')
             ->get();
     }
 }

@@ -27,11 +27,11 @@ class DeclarationController extends Controller
         $validated['user_id'] = auth()->user()->id;
 
         $declaration = Declaration::create($validated);
-        if ($validated['image_id']) {
+        if ($request->image_id) {
             $image = Image::find($validated['image_id']);
             $declaration->image()->save($image);
         }
-        if ($validated['hashtag']) {
+        if ($request->hashtag) {
             $hashtag = Hashtag::firstOrCreate(['name' => $validated['hashtag']]);
             $declaration->hashtag_id = $hashtag->id;
             $declaration->save();
@@ -65,19 +65,19 @@ class DeclarationController extends Controller
         $validated = $this->validate($request, [
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'hashtag_id' => 'nullable|exists:hashtags,id'
         ]);
 
-        if ($validated['latitude'] && $validated['longitude']) {
-            $query = Declaration::geofence($validated['latitude'], $validated['longitude'], 0, 50);
-        } else {
-            $query = Declaration::query();
-        }
-    
-        return $query
-            ->has('user')
-            ->with(['user', 'mood'])
+        return Declaration::has('user')
             ->where('created_at', '>=', Carbon::now()->subDay())
             ->where('share', 1)
+            ->when($request->latitude && $request->longitude, function ($query) use ($validated) {
+                return $query->geofence($validated['latitude'], $validated['longitude'], 0, 50);
+            })
+            ->when($request->hashtag_id, function($query) use ($validated) {
+                return $query->where('hashtag_id', $validated['hashtag_id']);
+            })
+            ->with(['user', 'mood', 'hashtag'])
             ->latest()
             ->get();
     }
