@@ -45,8 +45,25 @@ class Declaration extends Model
         return $this->morphOne(Image::class, 'imagable');
     }
 
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
     public function getImageUrlAttribute()
     {
         return $this->image !== null ? asset(Storage::url($this->image->path)) : null;
+    }
+    
+    public function getLikedAttribute() 
+    {
+        return 
+            $this->attributes['id'] &&
+            auth()->user() && 
+            auth()->user()
+                ->likes
+                ->where('likeable_type', Declaration::class)
+                ->where('likeable_id', $this->attributes['id'])
+                ->isNotEmpty();
     }
 }

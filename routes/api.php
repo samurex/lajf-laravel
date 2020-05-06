@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum'])
         Route::get('latest', 'DeclarationController@latest');
         Route::get('map', 'DeclarationController@map');
         Route::get('dashboard', 'DeclarationController@dashboard');
+        Route::post('like/{id}', 'DeclarationController@like');
 
         Route::get('settings', 'SettingsController@index');
         Route::post('settings', 'SettingsController@update');

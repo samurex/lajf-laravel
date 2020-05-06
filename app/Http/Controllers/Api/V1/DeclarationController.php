@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Declaration;
 use App\Image;
 use App\Hashtag;
+use App\User;
+use App\Like;
 
 class DeclarationController extends Controller
 {
@@ -68,7 +70,7 @@ class DeclarationController extends Controller
             'hashtag_id' => 'nullable|exists:hashtags,id'
         ]);
 
-        return Declaration::has('user')
+        $declarations = Declaration::has('user')
             ->where('created_at', '>=', Carbon::now()->subDay())
             ->where('share', 1)
             ->when($request->latitude && $request->longitude, function ($query) use ($validated) {
@@ -80,5 +82,33 @@ class DeclarationController extends Controller
             ->with(['user', 'mood', 'hashtag'])
             ->latest()
             ->get();
+        
+        // mark current user likes
+        auth()->user()->load('likes');
+        $declarations->each->append('liked');
+        
+        return $declarations;
+    }
+
+    public function like($id)
+    {
+        $userId = auth()->user()->id;
+        $declaration = Declaration::findOrFail($id);
+
+        $like = $declaration
+            ->likes()
+            ->where('user_id',  $userId)
+            ->first();
+
+        if ($like) {
+            $like->delete();
+            $declaration->likes_count -= 1;
+        } else {
+            $declaration->likes()->create([
+                'user_id' => $userId
+            ]);
+            $declaration->likes_count += 1;
+        }
+        $declaration->save();
     }
 }
