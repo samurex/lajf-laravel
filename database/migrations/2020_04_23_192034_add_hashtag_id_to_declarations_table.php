@@ -14,7 +14,7 @@ class AddHashtagIdToDeclarationsTable extends Migration
     public function up()
     {
         Schema::table('declarations', function (Blueprint $table) {
-            $table->integer('hashtag_id')->nullable()->after('image_id');
+            $table->integer('hashtag_id')->nullable()->after('share');
         });
     }
 
